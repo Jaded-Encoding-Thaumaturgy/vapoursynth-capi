@@ -41,6 +41,7 @@ __all__ = [
     'VSPLUGINAPI',
     'VSInitPlugin',
 
+    'VSSCRIPTAPI',
     'VSScript'
 ]
 
@@ -223,3 +224,65 @@ class VSScript(Struct):
     id: int
     exitCode: int
     setCWD: int
+
+
+class VSSCRIPTAPI(Struct):
+    @staticmethod
+    def getAPIVersion() -> int:
+        ...
+
+    @staticmethod
+    def getVSAPI(version: int, /) -> Pointer[VSAPI]:
+        ...
+
+    @staticmethod
+    def createScript(core: Pointer[VSCore], /) -> VSScript:
+        ...
+
+    @staticmethod
+    def getCore(handle: Pointer[VSScript], /) -> VSCore:
+        ...
+
+    @staticmethod
+    def evaluateBuffer(handle: Pointer[VSScript], buffer: str, scriptFilename: str, /) -> int:
+        ...
+
+    @staticmethod
+    def evaluateFile(handle: Pointer[VSScript], scriptFilename: str, /) -> int:
+        ...
+
+    @staticmethod
+    def getError(handle: Pointer[VSScript], /) -> str:
+        ...
+
+    @staticmethod
+    def getExitCode(handle: Pointer[VSScript], /) -> int:
+        ...
+
+    @staticmethod
+    def getVariable(handle: Pointer[VSScript], name: str, dst: Pointer[VSMap], /) -> int:
+        ...
+
+    @staticmethod
+    def setVariables(handle: Pointer[VSScript], vars: Pointer[VSMap], /) -> int:
+        ...
+
+    @staticmethod
+    def getOutputNode(handle: Pointer[VSScript], index: int, /) -> Pointer[VSNode]:
+        ...
+
+    @staticmethod
+    def getOutputAlphaNode(handle: Pointer[VSScript], index: int, /) -> Pointer[VSNode]:
+        ...
+
+    @staticmethod
+    def getAltOutputMode(handle: Pointer[VSScript], index: int, /) -> int:
+        ...
+
+    @staticmethod
+    def freeScript(handle: Pointer[VSScript], /) -> None:
+        ...
+
+    @staticmethod
+    def evalSetWorkingDir(handle: Pointer[VSScript], setCWD: int, /) -> None:
+        ...

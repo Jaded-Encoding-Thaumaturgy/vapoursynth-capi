@@ -7,18 +7,24 @@ except ModuleNotFoundError:
 
 from ctypedffi import CythonModule, Library, Pointer
 
-from .structs import VSCore, VSNode, VSScript
+from .structs import VSSCRIPTAPI, VSCore, VSNode, VSScript
 from .vsapi import VSAPI
 
 
 __all__ = [
-    'VapourSynthLib', 'VPyCythonLib'
+    'VapourSynthLib', 'VSScriptLib', 'VPyCythonLib'
 ]
 
 
 class VapourSynthLib(Library, lib='vapoursynth'):
     @staticmethod
     def getVapourSynthAPI(version: int, /) -> Pointer[VSAPI]:
+        ...
+
+
+class VSScriptLib(Library, lib='vsscript'):
+    @staticmethod
+    def getVSScriptAPI(version: int, /) -> Pointer[VSSCRIPTAPI]:
         ...
 
 
