@@ -4,6 +4,7 @@ from ctypes import c_int64, c_uint64, c_void_p
 from typing import TYPE_CHECKING
 
 from ctypedffi import OpaqueStruct, Pointer, String, Struct, as_cfunc
+from ctypedffi.ctypes import py_object
 
 if TYPE_CHECKING:
     from .vsapi import VSAPI
@@ -38,7 +39,9 @@ __all__ = [
     'VSLogHandlerFree',
 
     'VSPLUGINAPI',
-    'VSInitPlugin'
+    'VSInitPlugin',
+
+    'VSScript'
 ]
 
 
@@ -211,3 +214,12 @@ class VSPLUGINAPI(Struct):
 @as_cfunc
 def VSInitPlugin(plugin: Pointer[VSPlugin], vspapi: Pointer[VSPLUGINAPI], /) -> c_void_p:
     ...
+
+
+class VSScript(Struct):
+    pyenvdict: py_object
+    errstr: c_void_p
+    core: VSCore
+    id: int
+    exitCode: int
+    setCWD: int
