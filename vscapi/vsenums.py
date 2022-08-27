@@ -82,51 +82,68 @@ class VSSampleType(IntEnum):
     stFloat = 1
 
 
+def VS_MAKE_VIDEO_ID(
+    colorFamily: int, sampleType: int, bitsPerSample: int, subSamplingW: int, subSamplingH: int
+) -> int:
+    return (
+        (colorFamily << 28) | (sampleType << 24) | (bitsPerSample << 16) | (subSamplingW << 8) | (subSamplingH << 0)
+    )
+
+
 class VSPresetFormat(IntEnum):
     pfNone = 0
 
-    pfGray8 = (((((1 << 28) | (0 << 24)) | (8 << 16)) | (0 << 8)) | (0 << 0))
-    pfGray9 = (((((1 << 28) | (0 << 24)) | (9 << 16)) | (0 << 8)) | (0 << 0))
-    pfGray10 = (((((1 << 28) | (0 << 24)) | (10 << 16)) | (0 << 8)) | (0 << 0))
-    pfGray12 = (((((1 << 28) | (0 << 24)) | (12 << 16)) | (0 << 8)) | (0 << 0))
-    pfGray14 = (((((1 << 28) | (0 << 24)) | (14 << 16)) | (0 << 8)) | (0 << 0))
-    pfGray16 = (((((1 << 28) | (0 << 24)) | (16 << 16)) | (0 << 8)) | (0 << 0))
-    pfGray32 = (((((1 << 28) | (0 << 24)) | (32 << 16)) | (0 << 8)) | (0 << 0))
-    pfGrayH = (((((1 << 28) | (1 << 24)) | (16 << 16)) | (0 << 8)) | (0 << 0))
-    pfGrayS = (((((1 << 28) | (1 << 24)) | (32 << 16)) | (0 << 8)) | (0 << 0))
+    pfGray8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 8, 0, 0),
+    pfGray9 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 9, 0, 0),
+    pfGray10 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 10, 0, 0),
+    pfGray12 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 12, 0, 0),
+    pfGray14 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 14, 0, 0),
+    pfGray16 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 16, 0, 0),
+    pfGray32 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 32, 0, 0),
 
-    pfYUV410P8 = (((((3 << 28) | (0 << 24)) | (8 << 16)) | (2 << 8)) | (2 << 0))
-    pfYUV411P8 = (((((3 << 28) | (0 << 24)) | (8 << 16)) | (2 << 8)) | (0 << 0))
-    pfYUV440P8 = (((((3 << 28) | (0 << 24)) | (8 << 16)) | (0 << 8)) | (1 << 0))
-    pfYUV420P8 = (((((3 << 28) | (0 << 24)) | (8 << 16)) | (1 << 8)) | (1 << 0))
-    pfYUV422P8 = (((((3 << 28) | (0 << 24)) | (8 << 16)) | (1 << 8)) | (0 << 0))
-    pfYUV444P8 = (((((3 << 28) | (0 << 24)) | (8 << 16)) | (0 << 8)) | (0 << 0))
-    pfYUV420P9 = (((((3 << 28) | (0 << 24)) | (9 << 16)) | (1 << 8)) | (1 << 0))
-    pfYUV422P9 = (((((3 << 28) | (0 << 24)) | (9 << 16)) | (1 << 8)) | (0 << 0))
-    pfYUV444P9 = (((((3 << 28) | (0 << 24)) | (9 << 16)) | (0 << 8)) | (0 << 0))
-    pfYUV420P10 = (((((3 << 28) | (0 << 24)) | (10 << 16)) | (1 << 8)) | (1 << 0))
-    pfYUV422P10 = (((((3 << 28) | (0 << 24)) | (10 << 16)) | (1 << 8)) | (0 << 0))
-    pfYUV444P10 = (((((3 << 28) | (0 << 24)) | (10 << 16)) | (0 << 8)) | (0 << 0))
-    pfYUV420P12 = (((((3 << 28) | (0 << 24)) | (12 << 16)) | (1 << 8)) | (1 << 0))
-    pfYUV422P12 = (((((3 << 28) | (0 << 24)) | (12 << 16)) | (1 << 8)) | (0 << 0))
-    pfYUV444P12 = (((((3 << 28) | (0 << 24)) | (12 << 16)) | (0 << 8)) | (0 << 0))
-    pfYUV420P14 = (((((3 << 28) | (0 << 24)) | (14 << 16)) | (1 << 8)) | (1 << 0))
-    pfYUV422P14 = (((((3 << 28) | (0 << 24)) | (14 << 16)) | (1 << 8)) | (0 << 0))
-    pfYUV444P14 = (((((3 << 28) | (0 << 24)) | (14 << 16)) | (0 << 8)) | (0 << 0))
-    pfYUV420P16 = (((((3 << 28) | (0 << 24)) | (16 << 16)) | (1 << 8)) | (1 << 0))
-    pfYUV422P16 = (((((3 << 28) | (0 << 24)) | (16 << 16)) | (1 << 8)) | (0 << 0))
-    pfYUV444P16 = (((((3 << 28) | (0 << 24)) | (16 << 16)) | (0 << 8)) | (0 << 0))
-    pfYUV444PH = (((((3 << 28) | (1 << 24)) | (16 << 16)) | (0 << 8)) | (0 << 0))
-    pfYUV444PS = (((((3 << 28) | (1 << 24)) | (32 << 16)) | (0 << 8)) | (0 << 0))
+    pfGrayH = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stFloat, 16, 0, 0),
+    pfGrayS = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stFloat, 32, 0, 0),
 
-    pfRGB24 = (((((2 << 28) | (0 << 24)) | (8 << 16)) | (0 << 8)) | (0 << 0))
-    pfRGB27 = (((((2 << 28) | (0 << 24)) | (9 << 16)) | (0 << 8)) | (0 << 0))
-    pfRGB30 = (((((2 << 28) | (0 << 24)) | (10 << 16)) | (0 << 8)) | (0 << 0))
-    pfRGB36 = (((((2 << 28) | (0 << 24)) | (12 << 16)) | (0 << 8)) | (0 << 0))
-    pfRGB42 = (((((2 << 28) | (0 << 24)) | (14 << 16)) | (0 << 8)) | (0 << 0))
-    pfRGB48 = (((((2 << 28) | (0 << 24)) | (16 << 16)) | (0 << 8)) | (0 << 0))
-    pfRGBH = (((((2 << 28) | (1 << 24)) | (16 << 16)) | (0 << 8)) | (0 << 0))
-    pfRGBS = (((((2 << 28) | (1 << 24)) | (32 << 16)) | (0 << 8)) | (0 << 0))
+    pfYUV410P8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 8, 2, 2),
+    pfYUV411P8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 8, 2, 0),
+    pfYUV440P8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 8, 0, 1),
+
+    pfYUV420P8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 8, 1, 1),
+    pfYUV422P8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 8, 1, 0),
+    pfYUV444P8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 8, 0, 0),
+
+    pfYUV420P9 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 9, 1, 1),
+    pfYUV422P9 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 9, 1, 0),
+    pfYUV444P9 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 9, 0, 0),
+
+    pfYUV420P10 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 10, 1, 1),
+    pfYUV422P10 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 10, 1, 0),
+    pfYUV444P10 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 10, 0, 0),
+
+    pfYUV420P12 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 12, 1, 1),
+    pfYUV422P12 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 12, 1, 0),
+    pfYUV444P12 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 12, 0, 0),
+
+    pfYUV420P14 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 14, 1, 1),
+    pfYUV422P14 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 14, 1, 0),
+    pfYUV444P14 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 14, 0, 0),
+
+    pfYUV420P16 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 16, 1, 1),
+    pfYUV422P16 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 16, 1, 0),
+    pfYUV444P16 = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stInteger, 16, 0, 0),
+
+    pfYUV444PH = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stFloat, 16, 0, 0),
+    pfYUV444PS = VS_MAKE_VIDEO_ID(VSColorFamily.cfYUV, VSSampleType.stFloat, 32, 0, 0),
+
+    pfRGB24 = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stInteger, 8, 0, 0),
+    pfRGB27 = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stInteger, 9, 0, 0),
+    pfRGB30 = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stInteger, 10, 0, 0),
+    pfRGB36 = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stInteger, 12, 0, 0),
+    pfRGB42 = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stInteger, 14, 0, 0),
+    pfRGB48 = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stInteger, 16, 0, 0),
+
+    pfRGBH = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stFloat, 16, 0, 0),
+    pfRGBS = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stFloat, 32, 0, 0),
 
 
 class VSFilterMode(IntEnum):
