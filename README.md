@@ -1,4 +1,4 @@
-# vapoursynth-py
+# vapoursynth-capi
 
 ### VapourSynth C Api bindings in Python
 <br>
