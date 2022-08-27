@@ -2,6 +2,31 @@ from __future__ import annotations
 
 from enum import IntEnum
 
+__all__ = [
+    'VSActivationReason',
+    'VSMessageType',
+    'VSCoreCreationFlags',
+    'VSPluginConfigFlags',
+    'VSDataTypeHint',
+    'VSRequestPattern',
+    'VSCacheMode',
+    'VSColorFamily',
+    'VSSampleType',
+    'VSPresetFormat',
+    'VSFilterMode',
+    'VSMediaType',
+    'VSAudioChannels',
+    'VSPropertyType',
+    'VSMapPropertyError',
+    'VSMapAppendMode',
+    'VSColorRange',
+    'VSChromaLocation',
+    'VSFieldBased',
+    'VSMatrixCoefficients',
+    'VSTransferCharacteristics',
+    'VSColorPrimaries',
+]
+
 
 class VSActivationReason(IntEnum):
     arError = -1
@@ -167,3 +192,72 @@ class VSMapPropertyError(IntEnum):
 class VSMapAppendMode(IntEnum):
     maReplace = 0
     maAppend = 1
+
+
+class VSColorRange(IntEnum):
+    RANGE_FULL = 0
+    RANGE_LIMITED = 1
+
+
+class VSChromaLocation(IntEnum):
+    CHROMA_LEFT = 0
+    CHROMA_CENTER = 1
+    CHROMA_TOP_LEFT = 2
+    CHROMA_TOP = 3
+    CHROMA_BOTTOM_LEFT = 4
+    CHROMA_BOTTOM = 5
+
+
+class VSFieldBased(IntEnum):
+    FIELD_PROGRESSIVE = 0
+    FIELD_BOTTOM = 1
+    FIELD_TOP = 2
+
+
+class VSMatrixCoefficients(IntEnum):
+    MATRIX_RGB = 0
+    MATRIX_BT709 = 1
+    MATRIX_UNSPECIFIED = 2
+    MATRIX_FCC = 4
+    MATRIX_BT470_BG = 5
+    MATRIX_ST170_M = 6
+    MATRIX_ST240_M = 7
+    MATRIX_YCGCO = 8
+    MATRIX_BT2020_NCL = 9
+    MATRIX_BT2020_CL = 10
+    MATRIX_CHROMATICITY_DERIVED_NCL = 12
+    MATRIX_CHROMATICITY_DERIVED_CL = 13
+    MATRIX_ICTCP = 14
+
+
+class VSTransferCharacteristics(IntEnum):
+    TRANSFER_BT709 = 1
+    TRANSFER_UNSPECIFIED = 2
+    TRANSFER_BT470_M = 4
+    TRANSFER_BT470_BG = 5
+    TRANSFER_BT601 = 6
+    TRANSFER_ST240_M = 7
+    TRANSFER_LINEAR = 8
+    TRANSFER_LOG_100 = 9
+    TRANSFER_LOG_316 = 10
+    TRANSFER_IEC_61966_2_4 = 11
+    TRANSFER_IEC_61966_2_1 = 13
+    TRANSFER_BT2020_10 = 14
+    TRANSFER_BT2020_12 = 15
+    TRANSFER_ST2084 = 16
+    TRANSFER_ARIB_B67 = 18
+
+
+class VSColorPrimaries(IntEnum):
+    PRIMARIES_BT709 = 1
+    PRIMARIES_UNSPECIFIED = 2
+    PRIMARIES_BT470_M = 4
+    PRIMARIES_BT470_BG = 5
+    PRIMARIES_ST170_M = 6
+    PRIMARIES_ST240_M = 7
+    PRIMARIES_FILM = 8
+    PRIMARIES_BT2020 = 9
+    PRIMARIES_ST428 = 10
+    PRIMARIES_ST431_2 = 11
+    PRIMARIES_ST432_1 = 12
+    PRIMARIES_EBU3213_E = 22
