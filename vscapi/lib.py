@@ -82,7 +82,6 @@ class VPyCythonLib(CythonModule, module=vapoursynth):
         ...
 
     @staticmethod
-    @staticmethod
     def vpy4_getVariable() -> int:
         ...
 
