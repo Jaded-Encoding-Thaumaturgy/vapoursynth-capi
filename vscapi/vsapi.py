@@ -487,3 +487,33 @@ class VSAPI(Struct):
     @staticmethod
     def removeLogHandler(handle: Pointer[VSLogHandle], core: Pointer[VSCore], /) -> int:
         ...
+
+    # UNSTABLE API
+
+    @staticmethod
+    def getNodeCreationFunctionName(node: Pointer[VSNode], level: int, /) -> str:
+        ...
+
+    @staticmethod
+    def getNodeCreationFunctionArguments(node: Pointer[VSNode], level: int, /) -> Pointer[VSMap]:
+        ...
+
+    @staticmethod
+    def getNodeName(node: Pointer[VSNode], /) -> str:
+        ...
+
+    @staticmethod
+    def getNodeFilterMode(node: Pointer[VSNode], /) -> int:
+        ...
+
+    @staticmethod
+    def getNodeFilterTime(node: Pointer[VSNode], /) -> int:
+        ...
+
+    @staticmethod
+    def getNodeDependencies(node: Pointer[VSNode], /) -> Pointer[VSFilterDependency]:
+        ...
+
+    @staticmethod
+    def getNumNodeDependencies(node: Pointer[VSNode], /) -> int:
+        ...
