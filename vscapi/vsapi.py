@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ctypedffi import Pointer, Struct
+from ctypedffi import Pointer, Struct, with_signature
 from ctypedffi.ctypes import StrType, c_char_p, c_float, c_int64, c_ptrdiff_t, c_uint8, c_uint32, c_uint64, c_void_p
 
 from .structs import (
@@ -289,7 +289,8 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def mapGetInt(map: Pointer[VSMap], key: StrType, index: int, error: Pointer[int], /) -> c_int64:
+    @with_signature(res_type=c_int64)
+    def mapGetInt(map: Pointer[VSMap], key: StrType, index: int, error: Pointer[int], /) -> int:
         ...
 
     @staticmethod
@@ -297,15 +298,18 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def mapGetIntArray(map: Pointer[VSMap], key: StrType, error: Pointer[int], /) -> Pointer[c_int64]:
+    @with_signature(res_type=c_int64)
+    def mapGetIntArray(map: Pointer[VSMap], key: StrType, error: Pointer[int], /) -> Pointer[int]:
         ...
 
     @staticmethod
-    def mapSetInt(map: Pointer[VSMap], key: StrType, i: c_int64, append: int, /) -> int:
+    @with_signature(i=c_int64)
+    def mapSetInt(map: Pointer[VSMap], key: StrType, i: int, append: int, /) -> int:
         ...
 
     @staticmethod
-    def mapSetIntArray(map: Pointer[VSMap], key: StrType, i: Pointer[c_int64], size: int, /) -> int:
+    @with_signature(i=Pointer[c_int64])
+    def mapSetIntArray(map: Pointer[VSMap], key: StrType, i: Pointer[int], size: int, /) -> int:
         ...
 
     @staticmethod
@@ -454,7 +458,8 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def setMaxCacheSize(bytes: c_int64, core: Pointer[VSCore], /) -> c_int64:
+    @with_signature(bytes=c_int64, res_type=c_int64)
+    def setMaxCacheSize(bytes: int, core: Pointer[VSCore], /) -> int:
         ...
 
     @staticmethod
