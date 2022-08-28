@@ -5,7 +5,7 @@ try:
 except ModuleNotFoundError:
     vapoursynth = None  # type: ignore
 
-from ctypedffi import CythonModule, Library, Pointer
+from ctypedffi import CythonModule, Library, Pointer, with_signature
 
 from .structs import VSSCRIPTAPI, VSCore, VSNode, VSScript
 from .vsapi import VSAPI
@@ -30,73 +30,91 @@ class VSScriptLib(Library, lib='vsscript'):
 
 class VPyCythonLib(CythonModule, module=vapoursynth):
     @staticmethod
-    def vpy4_createScript(se: Pointer[VSScript]) -> int:
+    @with_signature(name='vpy4_createScript')
+    def createScript(se: Pointer[VSScript]) -> int:
         ...
 
     @staticmethod
-    def vpy_evaluateScript(se: Pointer[VSScript], script: str, scriptFilename: str, flags: int) -> int:
+    @with_signature(name='vpy_evaluateScript')
+    def evaluateScript(se: Pointer[VSScript], script: str, scriptFilename: str, flags: int) -> int:
         ...
 
     @staticmethod
-    def vpy_evaluateFile(se: Pointer[VSScript], scriptFilename: str, flags: int) -> int:
+    @with_signature(name='vpy_evaluateFile')
+    def evaluateFileAPI3(se: Pointer[VSScript], scriptFilename: str, flags: int) -> int:
         ...
 
     @staticmethod
-    def vpy4_evaluateBuffer(se: Pointer[VSScript], buffer: str, scriptFilename: str) -> int:
+    @with_signature(name='vpy4_evaluateBuffer')
+    def evaluateBuffer(se: Pointer[VSScript], buffer: str, scriptFilename: str) -> int:
         ...
 
     @staticmethod
-    def vpy4_evaluateFile(se: Pointer[VSScript], scriptFilename: str) -> int:
+    @with_signature(name='vpy4_evaluateFile')
+    def evaluateFile(se: Pointer[VSScript], scriptFilename: str) -> int:
         ...
 
     @staticmethod
-    def vpy4_freeScript(se: Pointer[VSScript]) -> None:
+    @with_signature(name='vpy4_freeScript')
+    def freeScript(se: Pointer[VSScript]) -> None:
         ...
 
     @staticmethod
-    def vpy4_getError(se: Pointer[VSScript]) -> str:
+    @with_signature(name='vpy4_getError')
+    def getError(se: Pointer[VSScript]) -> str:
         ...
 
     @staticmethod
-    def vpy4_getOutput(se: Pointer[VSScript], index: int) -> Pointer[VSNode]:
+    @with_signature(name='vpy4_getOutput')
+    def getOutput(se: Pointer[VSScript], index: int) -> Pointer[VSNode]:
         ...
 
     @staticmethod
-    def vpy4_getAlphaOutput(se: Pointer[VSScript], index: int) -> Pointer[VSNode]:
+    @with_signature(name='vpy4_getAlphaOutput')
+    def getAlphaOutput(se: Pointer[VSScript], index: int) -> Pointer[VSNode]:
         ...
 
     @staticmethod
-    def vpy4_getAltOutputMode(se: Pointer[VSScript], index: int) -> int:
+    @with_signature(name='vpy4_getAltOutputMode')
+    def getAltOutputMode(se: Pointer[VSScript], index: int) -> int:
         ...
 
     @staticmethod
-    def vpy_clearOutput(se: Pointer[VSScript], index: int) -> int:
+    @with_signature(name='vpy_clearOutput')
+    def clearOutput(se: Pointer[VSScript], index: int) -> int:
         ...
 
     @staticmethod
-    def vpy4_getCore(se: Pointer[VSScript]) -> Pointer[VSCore]:
+    @with_signature(name='vpy4_getCore')
+    def getCore(se: Pointer[VSScript]) -> Pointer[VSCore]:
         ...
 
     @staticmethod
-    def vpy4_getVSAPI(version: int, /) -> Pointer[VSAPI]:
+    @with_signature(name='vpy4_getVSAPI')
+    def getVSAPI(version: int, /) -> Pointer[VSAPI]:
         ...
 
     @staticmethod
-    def vpy4_getVariable() -> int:
+    @with_signature(name='vpy4_getVariable')
+    def getVariable() -> int:
         ...
 
     @staticmethod
-    def vpy4_setVariables() -> int:
+    @with_signature(name='vpy4_setVariables')
+    def setVariables() -> int:
         ...
 
     @staticmethod
-    def vpy_clearVariable() -> int:
+    @with_signature(name='vpy_clearVariable')
+    def clearVariable() -> int:
         ...
 
     @staticmethod
-    def vpy_clearEnvironment() -> None:
+    @with_signature(name='vpy_clearEnvironment')
+    def clearEnvironment() -> None:
         ...
 
     @staticmethod
-    def vpy4_initVSScript() -> int:
+    @with_signature(name='vpy4_initVSScript')
+    def initVSScript() -> int:
         ...
