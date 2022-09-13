@@ -236,11 +236,11 @@ class VSSCRIPTAPI(Struct):
         ...
 
     @staticmethod
-    def createScript(core: Pointer[VSCore], /) -> VSScript:
+    def createScript(core: Pointer[VSCore], /) -> Pointer[VSScript]:
         ...
 
     @staticmethod
-    def getCore(handle: Pointer[VSScript], /) -> VSCore:
+    def getCore(handle: Pointer[VSScript], /) -> Pointer[VSCore]:
         ...
 
     @staticmethod
