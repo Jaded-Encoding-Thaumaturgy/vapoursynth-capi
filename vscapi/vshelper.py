@@ -11,6 +11,26 @@ from .structs import VSAudioFormat, VSAudioInfo, VSCore, VSVideoFormat, VSVideoI
 from .vsapi import VSAPI
 from .vsenums import VSColorFamily, VSPresetFormat
 
+__all__ = [
+    'INT_MAX', 'INT_MIN',
+    'FLT_MAX', 'FLT_MIN',
+
+    'VSH_STD_PLUGIN_ID',
+    'VSH_RESIZE_PLUGIN_ID',
+    'VSH_TEXT_PLUGIN_ID',
+
+    'isConstantVideoFormat',
+
+    'isSameVideoFormat',
+    'isSameVideoPresetFormat',
+    'isSameVideoInfo',
+
+    'isSameAudioFormat',
+    'isSameAudioInfo',
+
+    'int64ToIntS'
+]
+
 INT_MAX = sys.maxsize
 INT_MIN = -INT_MAX - 1
 
