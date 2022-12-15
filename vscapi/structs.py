@@ -75,6 +75,12 @@ class VSNode(OpaqueStruct):
 
         return clip
 
+    @staticmethod
+    def from_cythonlib(
+        node: RawNode, vsapi: VSAPI | None = None, core: Pointer[VSCore] | None = None
+    ) -> Pointer[VSNode]:
+        return Pointer[VSNode].from_address(id(node) + 24)  # TODO find a better way
+
 
 @Struct.annotate
 class VSCore(OpaqueStruct):
