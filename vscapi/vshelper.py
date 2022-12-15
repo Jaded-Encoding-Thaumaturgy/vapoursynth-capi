@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import sys
-from ctypes import memmove
 from math import inf
 
 from ctypedffi import Pointer
-from ctypedffi.ctypes import c_ptrdiff_t, c_void_p
+from ctypedffi.ctypes import c_ptrdiff_t, c_void_p, memmove
 
 from .structs import VSAudioFormat, VSAudioInfo, VSCore, VSVideoFormat, VSVideoInfo
 from .vsapi import VSAPI
