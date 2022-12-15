@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from ctypedffi import OpaqueStruct, Pointer, String, Struct, as_cfunc, get_string_buff
 from ctypedffi.ctypes import VoidReturn, py_object, c_int64, c_uint64, c_void_p
-from vapoursynth import Core, _CoreProxy
+from vapoursynth import Core, _CoreProxy, RawNode
 
 if TYPE_CHECKING:
     from .vsapi import VSAPI
@@ -55,12 +55,9 @@ class VSFrame(OpaqueStruct):
 class VSNode(OpaqueStruct):
     @staticmethod
     def from_map(
-        outmap: VSMap | Pointer[VSMap], vsapi: VSAPI,
+        outmap: Pointer[VSMap], vsapi: VSAPI,
         key: str = 'clip', idx: int = 0, err_length: int = 1024
     ) -> Pointer[VSNode]:
-        if isinstance(outmap, VSMap):
-            outmap = Pointer(outmap)
-
         errorMsg, _ = get_string_buff(err_length)
 
         invokeError = vsapi.mapGetError(outmap)
@@ -97,19 +94,15 @@ class VSCore(OpaqueStruct):
             from vapoursynth import core as _core
             core = _core.core
 
-        try:
-            from vapoursynth import get_current_environment
-            core_ptr = get_current_environment().env().get_core_ptr().value  # type: ignore
-        except NameError:
-            core_ptr = id(core)
+        core_ptr = id(core)
 
-            while True:
-                try:
-                    t_core = Pointer[VSCore].from_address(core_ptr)
-                    vsapi.getPluginByNamespace('std', t_core)
-                    break
-                except OSError:
-                    core_ptr += 8
+        while True:
+            try:
+                t_core = Pointer[VSCore].from_address(core_ptr)
+                vsapi.getPluginByNamespace('std', t_core)
+                break
+            except OSError:
+                core_ptr += 8
 
         return Pointer[VSCore].from_address(core_ptr)
 
