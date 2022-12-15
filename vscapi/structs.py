@@ -54,7 +54,27 @@ class VSFrame(OpaqueStruct):
 
 @Struct.annotate
 class VSNode(OpaqueStruct):
-    ...
+    @staticmethod
+    def from_map(
+        outmap: VSMap | Pointer[VSMap], vsapi: VSAPI,
+        key: str = 'clip', idx: int = 0, err_length: int = 1024
+    ) -> Pointer[VSNode]:
+        if isinstance(outmap, VSMap):
+            outmap = Pointer(outmap)
+
+        errorMsg, _ = get_string_buff(err_length)
+
+        invokeError = vsapi.mapGetError(outmap)
+        if invokeError:
+            raise ValueError(invokeError)
+
+        error = Pointer[int]()
+        clip = vsapi.mapGetNode(outmap, key, idx, error)
+
+        if errorMsg.value or error:
+            raise ValueError(errorMsg.value or 'An error occured!')
+
+        return clip
 
 
 @Struct.annotate
