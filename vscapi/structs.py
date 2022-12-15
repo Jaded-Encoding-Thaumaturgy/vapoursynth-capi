@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from ctypedffi import OpaqueStruct, Pointer, String, Struct, as_cfunc
 from ctypedffi.ctypes import py_object
+from vapoursynth import Core, _CoreProxy
 
 if TYPE_CHECKING:
     from .vsapi import VSAPI
@@ -58,7 +59,34 @@ class VSNode(OpaqueStruct):
 
 @Struct.annotate
 class VSCore(OpaqueStruct):
-    ...
+    @staticmethod
+    def from_cythonlib(vsapi: VSAPI | Pointer[VSAPI], core: Core | _CoreProxy | None = None) -> Pointer[VSCore]:
+        from .vsapi import VSAPI
+
+        if not isinstance(vsapi, VSAPI):
+            vsapi = vsapi.contents
+
+        if isinstance(core, _CoreProxy):
+            core = core.core  # type: ignore
+        elif not core:
+            from vapoursynth import core as _core
+            core = _core.core
+
+        try:
+            from vapoursynth import get_current_environment
+            core_ptr = get_current_environment().env().get_core_ptr().value  # type: ignore
+        except NameError:
+            core_ptr = id(core)
+
+            while True:
+                try:
+                    t_core = Pointer[VSCore].from_address(core_ptr)
+                    vsapi.getPluginByNamespace('std', t_core)
+                    break
+                except OSError:
+                    core_ptr += 8
+
+        return Pointer[VSCore].from_address(core_ptr)
 
 
 @Struct.annotate
