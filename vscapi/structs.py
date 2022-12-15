@@ -4,7 +4,7 @@ from ctypes import c_int64, c_uint64, c_void_p
 from typing import TYPE_CHECKING
 
 from ctypedffi import OpaqueStruct, Pointer, String, Struct, as_cfunc
-from ctypedffi.ctypes import py_object
+from ctypedffi.ctypes import VoidReturn, py_object
 from vapoursynth import Core, _CoreProxy
 
 if TYPE_CHECKING:
@@ -181,12 +181,12 @@ def VSGetVapourSynthAPI(version: int, /) -> Pointer[VSAPI]:
 @as_cfunc
 def VSPublicFunction(
     inmap: Pointer[VSMap], outmap: Pointer[VSMap], userData: c_void_p, core: Pointer[VSCore], vsapi: Pointer[VSAPI], /,
-) -> c_void_p:
+) -> VoidReturn:
     ...
 
 
 @as_cfunc
-def VSFreeFunctionData(userData: c_void_p, /) -> c_void_p:
+def VSFreeFunctionData(userData: c_void_p, /) -> VoidReturn:
     ...
 
 
@@ -199,24 +199,24 @@ def VSFilterGetFrame(
 
 
 @as_cfunc
-def VSFilterFree(instanceData: c_void_p, core: Pointer[VSCore], vsapi: Pointer[VSAPI], /) -> c_void_p:
+def VSFilterFree(instanceData: c_void_p, core: Pointer[VSCore], vsapi: Pointer[VSAPI], /) -> VoidReturn:
     ...
 
 
 @as_cfunc
 def VSFrameDoneCallback(
     userData: c_void_p, f: Pointer[VSFrame], n: int, node: Pointer[VSNode], errorMsg: String, /,
-) -> c_void_p:
+) -> VoidReturn:
     ...
 
 
 @as_cfunc
-def VSLogHandler(msgType: int, msg: String, userData: c_void_p, /) -> c_void_p:
+def VSLogHandler(msgType: int, msg: String, userData: c_void_p, /) -> VoidReturn:
     ...
 
 
 @as_cfunc
-def VSLogHandlerFree(userData: c_void_p, /) -> c_void_p:
+def VSLogHandlerFree(userData: c_void_p, /) -> VoidReturn:
     ...
 
 
@@ -241,7 +241,7 @@ class VSPLUGINAPI(Struct):
 
 
 @as_cfunc
-def VSInitPlugin(plugin: Pointer[VSPlugin], vspapi: Pointer[VSPLUGINAPI], /) -> c_void_p:
+def VSInitPlugin(plugin: Pointer[VSPlugin], vspapi: Pointer[VSPLUGINAPI], /) -> VoidReturn:
     ...
 
 

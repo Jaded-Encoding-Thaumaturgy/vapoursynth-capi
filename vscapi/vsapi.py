@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from ctypedffi import Pointer, Struct, with_signature
-from ctypedffi.ctypes import StrType, c_char_p, c_float, c_int64, c_ptrdiff_t, c_uint8, c_uint32, c_uint64, c_void_p
+from ctypedffi.ctypes import (
+    StrType, c_char_p, c_float, c_int64, c_ptrdiff_t, c_uint8, c_uint32, c_uint64, c_void_p, VoidReturn
+)
 
 from .structs import (
     VSAudioFormat, VSAudioInfo, VSCore, VSCoreInfo, VSFilterDependency, VSFilterFree, VSFilterGetFrame, VSFrame,
@@ -20,7 +22,7 @@ class VSAPI(Struct):
         out: Pointer[VSMap], name: StrType, vi: Pointer[VSVideoInfo], getFrame: VSFilterGetFrame, free: VSFilterFree,
         filterMode: int, dependencies: Pointer[VSFilterDependency], numDeps: int, instanceData: c_void_p,
         core: Pointer[VSCore], /,
-    ) -> c_void_p:
+    ) -> VoidReturn:
         ...
 
     @staticmethod
@@ -35,7 +37,7 @@ class VSAPI(Struct):
         out: Pointer[VSMap], name: StrType, ai: Pointer[VSAudioInfo], getFrame: VSFilterGetFrame, free: VSFilterFree,
         filterMode: int, dependencies: Pointer[VSFilterDependency], numDeps: int, instanceData: c_void_p,
         core: Pointer[VSCore], /,
-    ) -> c_void_p:
+    ) -> VoidReturn:
         ...
 
     @staticmethod
@@ -50,15 +52,15 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def setCacheMode(node: Pointer[VSNode], mode: int, /) -> c_void_p:
+    def setCacheMode(node: Pointer[VSNode], mode: int, /) -> VoidReturn:
         ...
 
     @staticmethod
-    def setCacheOptions(node: Pointer[VSNode], fixedSize: int, maxSixe: int, maxHistorySize: int, /) -> c_void_p:
+    def setCacheOptions(node: Pointer[VSNode], fixedSize: int, maxSixe: int, maxHistorySize: int, /) -> VoidReturn:
         ...
 
     @staticmethod
-    def freeNode(node: Pointer[VSNode], /) -> c_void_p:
+    def freeNode(node: Pointer[VSNode], /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -104,7 +106,7 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def freeFrame(f: Pointer[VSFrame], /) -> c_void_p:
+    def freeFrame(f: Pointer[VSFrame], /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -199,7 +201,7 @@ class VSAPI(Struct):
     @staticmethod
     def getFrameAsync(
         n: int, node: Pointer[VSNode], callback: VSFrameDoneCallback, userData: c_void_p, /,
-    ) -> c_void_p:
+    ) -> VoidReturn:
         ...
 
     @staticmethod
@@ -207,19 +209,19 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def requestFrameFilter(n: int, node: Pointer[VSNode], frameCtx: Pointer[VSFrameContext], /) -> c_void_p:
+    def requestFrameFilter(n: int, node: Pointer[VSNode], frameCtx: Pointer[VSFrameContext], /) -> VoidReturn:
         ...
 
     @staticmethod
-    def releaseFrameEarly(node: Pointer[VSNode], n: int, frameCtx: Pointer[VSFrameContext], /) -> c_void_p:
+    def releaseFrameEarly(node: Pointer[VSNode], n: int, frameCtx: Pointer[VSFrameContext], /) -> VoidReturn:
         ...
 
     @staticmethod
-    def cacheFrame(frame: Pointer[VSFrame], n: int, frameCtx: Pointer[VSFrameContext], /) -> c_void_p:
+    def cacheFrame(frame: Pointer[VSFrame], n: int, frameCtx: Pointer[VSFrameContext], /) -> VoidReturn:
         ...
 
     @staticmethod
-    def setFilterError(errorMessage: StrType, frameCtx: Pointer[VSFrameContext], /) -> c_void_p:
+    def setFilterError(errorMessage: StrType, frameCtx: Pointer[VSFrameContext], /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -229,7 +231,7 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def freeFunction(f: Pointer[VSFunction], /) -> c_void_p:
+    def freeFunction(f: Pointer[VSFunction], /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -237,7 +239,7 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def callFunction(func: Pointer[VSFunction], inmap: Pointer[VSMap], outmap: Pointer[VSMap], /) -> c_void_p:
+    def callFunction(func: Pointer[VSFunction], inmap: Pointer[VSMap], outmap: Pointer[VSMap], /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -245,19 +247,19 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def freeMap(map: Pointer[VSMap], /) -> c_void_p:
+    def freeMap(map: Pointer[VSMap], /) -> VoidReturn:
         ...
 
     @staticmethod
-    def clearMap(map: Pointer[VSMap], /) -> c_void_p:
+    def clearMap(map: Pointer[VSMap], /) -> VoidReturn:
         ...
 
     @staticmethod
-    def copyMap(src: Pointer[VSMap], dst: Pointer[VSMap], /) -> c_void_p:
+    def copyMap(src: Pointer[VSMap], dst: Pointer[VSMap], /) -> VoidReturn:
         ...
 
     @staticmethod
-    def mapSetError(map: Pointer[VSMap], errorMessage: StrType, /) -> c_void_p:
+    def mapSetError(map: Pointer[VSMap], errorMessage: StrType, /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -454,7 +456,7 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def freeCore(core: Pointer[VSCore], /) -> c_void_p:
+    def freeCore(core: Pointer[VSCore], /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -467,7 +469,7 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def getCoreInfo(core: Pointer[VSCore], info: Pointer[VSCoreInfo], /) -> c_void_p:
+    def getCoreInfo(core: Pointer[VSCore], info: Pointer[VSCoreInfo], /) -> VoidReturn:
         ...
 
     @staticmethod
@@ -475,7 +477,7 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def logMessage(msgType: int, msg: StrType, core: Pointer[VSCore], /) -> c_void_p:
+    def logMessage(msgType: int, msg: StrType, core: Pointer[VSCore], /) -> VoidReturn:
         ...
 
     @staticmethod
