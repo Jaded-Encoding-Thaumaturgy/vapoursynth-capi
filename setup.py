@@ -2,6 +2,7 @@
 
 import setuptools
 from pathlib import Path
+from shutil import copy
 
 package_name = 'vscapi'
 
@@ -9,6 +10,11 @@ exec(Path(f'{package_name}/_metadata.py').read_text(), meta := dict[str, str]())
 
 readme = Path('README.md').read_text()
 requirements = Path('requirements.txt').read_text()
+
+dll_paths = [Path(f'lib/vscapi.{ext}').resolve() for ext in {'dll', 'so'}]
+
+for dll_path in dll_paths:
+    copy(dll_path, Path(f'{package_name}/{dll_path.name}'))
 
 
 setuptools.setup(
@@ -32,7 +38,7 @@ setuptools.setup(
         package_name
     ],
     package_data={
-        package_name: ['py.typed']
+        package_name: ['py.typed', *(dll.name for dll in dll_paths)]
     },
     classifiers=[
         'Programming Language :: Python :: 3',
