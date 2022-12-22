@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from enum import IntEnum
+from typing import TYPE_CHECKING
 
 __all__ = [
     'VSActivationReason',
@@ -27,14 +28,19 @@ __all__ = [
     'VSColorPrimaries',
 ]
 
+if TYPE_CHECKING:
+    vs_enum_base = IntEnum
+else:
+    vs_enum_base = object
 
-class VSActivationReason(IntEnum):
+
+class VSActivationReason(vs_enum_base):
     arError = -1
     arInitial = 0
     arAllFramesReady = 1
 
 
-class VSMessageType(IntEnum):
+class VSMessageType(vs_enum_base):
     mtDebug = 0
     mtInformation = 1
     mtWarning = 2
@@ -42,42 +48,42 @@ class VSMessageType(IntEnum):
     mtFatal = 4
 
 
-class VSCoreCreationFlags(IntEnum):
+class VSCoreCreationFlags(vs_enum_base):
     ccfEnableGraphInspection = 1
     ccfDisableAutoLoading = 2
     ccfDisableLibraryUnloading = 4
 
 
-class VSPluginConfigFlags(IntEnum):
+class VSPluginConfigFlags(vs_enum_base):
     pcModifiable = 1
 
 
-class VSDataTypeHint(IntEnum):
+class VSDataTypeHint(vs_enum_base):
     dtUnknown = (-1)
     dtBinary = 0
     dtUtf8 = 1
 
 
-class VSRequestPattern(IntEnum):
+class VSRequestPattern(vs_enum_base):
     rpGeneral = 0
     rpNoFrameReuse = 1
     rpStrictSpatial = 2
 
 
-class VSCacheMode(IntEnum):
+class VSCacheMode(vs_enum_base):
     cmAuto = -1
     cmForceDisable = 0
     cmForceEnable = 1
 
 
-class VSColorFamily(IntEnum):
+class VSColorFamily(vs_enum_base):
     cfUndefined = 0
     cfGray = 1
     cfRGB = 2
     cfYUV = 3
 
 
-class VSSampleType(IntEnum):
+class VSSampleType(vs_enum_base):
     stInteger = 0
     stFloat = 1
 
@@ -90,7 +96,7 @@ def VS_MAKE_VIDEO_ID(
     )
 
 
-class VSPresetFormat(IntEnum):
+class VSPresetFormat(vs_enum_base):
     pfNone = 0
 
     pfGray8 = VS_MAKE_VIDEO_ID(VSColorFamily.cfGray, VSSampleType.stInteger, 8, 0, 0),
@@ -146,19 +152,19 @@ class VSPresetFormat(IntEnum):
     pfRGBS = VS_MAKE_VIDEO_ID(VSColorFamily.cfRGB, VSSampleType.stFloat, 32, 0, 0),
 
 
-class VSFilterMode(IntEnum):
+class VSFilterMode(vs_enum_base):
     fmParallel = 0
     fmParallelRequests = 1
     fmUnordered = 2
     fmFrameState = 3
 
 
-class VSMediaType(IntEnum):
+class VSMediaType(vs_enum_base):
     mtVideo = 1
     mtAudio = 2
 
 
-class VSAudioChannels(IntEnum):
+class VSAudioChannels(vs_enum_base):
     acFrontLeft = 0
     acFrontRight = 1
     acFrontCenter = 2
@@ -186,7 +192,7 @@ class VSAudioChannels(IntEnum):
     acLowFrequency2 = 35
 
 
-class VSPropertyType(IntEnum):
+class VSPropertyType(vs_enum_base):
     ptUnset = 0
     ptInt = 1
     ptFloat = 2
@@ -198,7 +204,7 @@ class VSPropertyType(IntEnum):
     ptAudioFrame = 8
 
 
-class VSMapPropertyError(IntEnum):
+class VSMapPropertyError(vs_enum_base):
     peSuccess = 0
     peUnset = 1
     peType = 2
@@ -206,17 +212,17 @@ class VSMapPropertyError(IntEnum):
     peError = 3
 
 
-class VSMapAppendMode(IntEnum):
+class VSMapAppendMode(vs_enum_base):
     maReplace = 0
     maAppend = 1
 
 
-class VSColorRange(IntEnum):
+class VSColorRange(vs_enum_base):
     RANGE_FULL = 0
     RANGE_LIMITED = 1
 
 
-class VSChromaLocation(IntEnum):
+class VSChromaLocation(vs_enum_base):
     CHROMA_LEFT = 0
     CHROMA_CENTER = 1
     CHROMA_TOP_LEFT = 2
@@ -225,13 +231,13 @@ class VSChromaLocation(IntEnum):
     CHROMA_BOTTOM = 5
 
 
-class VSFieldBased(IntEnum):
+class VSFieldBased(vs_enum_base):
     FIELD_PROGRESSIVE = 0
     FIELD_BOTTOM = 1
     FIELD_TOP = 2
 
 
-class VSMatrixCoefficients(IntEnum):
+class VSMatrixCoefficients(vs_enum_base):
     MATRIX_RGB = 0
     MATRIX_BT709 = 1
     MATRIX_UNSPECIFIED = 2
@@ -247,7 +253,7 @@ class VSMatrixCoefficients(IntEnum):
     MATRIX_ICTCP = 14
 
 
-class VSTransferCharacteristics(IntEnum):
+class VSTransferCharacteristics(vs_enum_base):
     TRANSFER_BT709 = 1
     TRANSFER_UNSPECIFIED = 2
     TRANSFER_BT470_M = 4
@@ -265,7 +271,7 @@ class VSTransferCharacteristics(IntEnum):
     TRANSFER_ARIB_B67 = 18
 
 
-class VSColorPrimaries(IntEnum):
+class VSColorPrimaries(vs_enum_base):
     PRIMARIES_BT709 = 1
     PRIMARIES_UNSPECIFIED = 2
     PRIMARIES_BT470_M = 4
