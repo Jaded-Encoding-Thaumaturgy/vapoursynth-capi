@@ -90,7 +90,15 @@ class VSNode(OpaqueStruct):
 
         return VSAPI.from_cythonlib(core).addNodeRef(ptr)  # type: ignore
 
+    @classmethod
+    def to_cythonlib_vnode(cls, ptr: Pointer[VSNode], core: Core | CoreProxy | None = None) -> VideoNode:
+        from .lib import VSBridge
+        return VSBridge.ensure_vscapi(core).getVNodeFromPtr(addressof(ptr.contents))  # type: ignore
 
+    @classmethod
+    def to_cythonlib_anode(cls, ptr: Pointer[VSNode], core: Core | CoreProxy | None = None) -> AudioNode:
+        from .lib import VSBridge
+        return VSBridge.ensure_vscapi(core).getANodeFromPtr(addressof(ptr.contents))  # type: ignore
 
 
 @Struct.annotate
