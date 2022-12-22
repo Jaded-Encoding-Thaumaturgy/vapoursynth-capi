@@ -1,15 +1,16 @@
 from __future__ import annotations
 
+from ctypes import pointer
 from typing import TYPE_CHECKING
 
 from ctypedffi import OpaqueStruct, Pointer, String, Struct, as_cfunc, get_string_buff
-from ctypedffi.ctypes import VoidReturn, py_object, c_int64, c_uint64, c_void_p
-from vapoursynth import Core, _CoreProxy, RawNode
+from ctypedffi.ctypes import VoidReturn, addressof, c_int64, c_uint64, c_void_p, py_object
 
 if TYPE_CHECKING:
+    from .lib import AudioNode, Core, CoreProxy, RawNode, VideoNode
     from .vsapi import VSAPI
 else:
-    VSAPI = None
+    VSAPI = Core = CoreProxy = RawNode = AudioNode = VSBridge = VideoNode = None
 
 
 __all__ = [
@@ -73,38 +74,32 @@ class VSNode(OpaqueStruct):
         return clip
 
     @staticmethod
-    def from_cythonlib(
-        node: RawNode, vsapi: VSAPI | None = None, core: Pointer[VSCore] | None = None
-    ) -> Pointer[VSNode]:
-        return Pointer[VSNode].from_address(id(node) + 24)  # TODO find a better way
+    @Struct.python_only
+    def from_cythonlib(node: RawNode, core: Core | CoreProxy | None = None) -> Pointer[VSNode]:
+        from .lib import AudioNode, VSBridge
+        from .vsapi import VSAPI
+
+        vscapi = VSBridge.ensure_vscapi(core)
+
+        if isinstance(node, AudioNode):
+            ptr = vscapi.getANodePtr(node)
+        else:
+            ptr = vscapi.getVNodePtr(node)
+
+        ptr = pointer(VSNode.from_address(ptr))  # type: ignore
+
+        return VSAPI.from_cythonlib(core).addNodeRef(ptr)  # type: ignore
+
+
 
 
 @Struct.annotate
 class VSCore(OpaqueStruct):
     @staticmethod
-    def from_cythonlib(vsapi: VSAPI | Pointer[VSAPI], core: Core | _CoreProxy | None = None) -> Pointer[VSCore]:
-        from .vsapi import VSAPI
-
-        if not isinstance(vsapi, VSAPI):
-            vsapi = vsapi.contents
-
-        if isinstance(core, _CoreProxy):
-            core = core.core  # type: ignore
-        elif not core:
-            from vapoursynth import core as _core
-            core = _core.core
-
-        core_ptr = id(core)
-
-        while True:
-            try:
-                t_core = Pointer[VSCore].from_address(core_ptr)
-                vsapi.getPluginByNamespace('std', t_core)
-                break
-            except OSError:
-                core_ptr += 8
-
-        return Pointer[VSCore].from_address(core_ptr)
+    @Struct.python_only
+    def from_cythonlib(core: Core | CoreProxy | None = None) -> Pointer[VSCore]:
+        from .lib import VSBridge
+        return pointer(VSCore.from_address(VSBridge.ensure_vscapi(core).getCorePtr()))  # type: ignore
 
 
 @Struct.annotate
@@ -240,6 +235,13 @@ def VSLogHandlerFree(userData: c_void_p, /) -> VoidReturn:
 
 class VSPLUGINAPI(Struct):
     @staticmethod
+    @Struct.python_only
+    def from_cythonlib(core: Core | CoreProxy | None = None) -> VSPLUGINAPI:
+        from .lib import VSBridge
+
+        return VSPLUGINAPI.from_address(VSBridge.ensure_vscapi(core).getVSPApiPtr())  # type: ignore
+
+    @staticmethod
     def getAPIVersion() -> int:
         ...
 
@@ -332,3 +334,6 @@ class VSSCRIPTAPI(Struct):
     @staticmethod
     def evalSetWorkingDir(handle: Pointer[VSScript], setCWD: int, /) -> None:
         ...
+
+
+VSCoreT = Pointer[VSCore] | Core | CoreProxy | None

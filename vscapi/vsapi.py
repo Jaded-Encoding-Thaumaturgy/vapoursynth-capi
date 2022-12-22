@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from ctypedffi import Pointer, Struct, with_signature
-from ctypedffi.ctypes import (
-    StrType, c_char_p, c_float, c_int64, c_ptrdiff_t, c_uint8, c_uint32, c_uint64, c_void_p, VoidReturn
-)
+from ctypedffi.ctypes import StrType, VoidReturn, c_char_p, c_float, c_int64, c_ptrdiff_t, c_uint32, c_uint64, c_void_p
 
 from .structs import (
     VSAudioFormat, VSAudioInfo, VSCore, VSCoreInfo, VSFilterDependency, VSFilterFree, VSFilterGetFrame, VSFrame,
@@ -11,12 +11,23 @@ from .structs import (
     VSMap, VSNode, VSPlugin, VSPluginFunction, VSPublicFunction, VSVideoFormat, VSVideoInfo
 )
 
+if TYPE_CHECKING:
+    from .lib import Core, CoreProxy
+else:
+    Core = CoreProxy = None
+
 __all__ = [
     'VSAPI'
 ]
 
 
 class VSAPI(Struct):
+    @staticmethod
+    @Struct.python_only
+    def from_cythonlib(core: Core | CoreProxy | None = None) -> VSAPI:
+        from .lib import VSBridge
+        return VSAPI.from_address(VSBridge.ensure_vscapi(core).getVSApiPtr())  # type: ignore
+
     @staticmethod
     def createVideoFilter(
         out: Pointer[VSMap], name: StrType, vi: Pointer[VSVideoInfo], getFrame: VSFilterGetFrame, free: VSFilterFree,
