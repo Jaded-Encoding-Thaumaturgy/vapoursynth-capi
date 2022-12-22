@@ -17,7 +17,11 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+lib/vscapi.o
+!lib/vscapi.dll
+!lib/vscapi.so
+vscapi/vscapi.dll
+vscapi/vscapi.so
 lib64/
 parts/
 sdist/
