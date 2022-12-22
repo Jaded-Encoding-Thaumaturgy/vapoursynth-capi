@@ -130,11 +130,11 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def getReadPtr(f: Pointer[VSFrame], plane: int, /) -> Pointer[c_uint8]:
+    def getReadPtr(f: Pointer[VSFrame], plane: int, /) -> c_uint64:
         ...
 
     @staticmethod
-    def getWritePtr(f: Pointer[VSFrame], plane: int, /) -> Pointer[c_uint8]:
+    def getWritePtr(f: Pointer[VSFrame], plane: int, /) -> c_uint64:
         ...
 
     @staticmethod
