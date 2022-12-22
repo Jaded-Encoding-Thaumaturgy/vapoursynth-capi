@@ -3,8 +3,8 @@ from __future__ import annotations
 import sys
 from math import inf
 
-from ctypedffi import Pointer
-from ctypedffi.ctypes import c_ptrdiff_t, c_void_p, memmove
+from ctypedffi import CDataBase, Pointer
+from ctypedffi.ctypes import c_ptrdiff_t, memmove
 
 from .structs import VSAudioFormat, VSAudioInfo, VSCore, VSVideoFormat, VSVideoInfo
 from .vsapi import VSAPI
@@ -27,7 +27,11 @@ __all__ = [
     'isSameAudioFormat',
     'isSameAudioInfo',
 
-    'int64ToIntS'
+    'int64ToIntS',
+
+    'doubleToFloatS',
+    'bitblt',
+    'areValidDimensions',
 ]
 
 INT_MAX = sys.maxsize
@@ -100,19 +104,16 @@ def doubleToFloatS(d: float) -> float:
 
 
 def bitblt(
-    dstp: c_void_p, dst_stride: c_ptrdiff_t, srcp: c_void_p, src_stride: c_ptrdiff_t, row_size: int, height: int
+    dstp: CDataBase, dst_stride: c_ptrdiff_t, srcp: CDataBase, src_stride: c_ptrdiff_t, row_size: int, height: int
 ) -> None:
     if not height:
         return
 
     if src_stride == dst_stride and src_stride == row_size:  # type: ignore
-        memmove(dstp, srcp, row_size * height)
-        return
+        return memmove(dstp, srcp, row_size * height)  # type: ignore
 
-    srcp8 = srcp.value
-    dstp8 = dstp.value
-
-    assert srcp8 and dstp8
+    srcp8 = srcp.value if hasattr(srcp, 'value') else srcp.contents.value  # type: ignore
+    dstp8 = dstp.value if hasattr(dstp, 'value') else dstp.contents.value  # type: ignore
 
     for _ in range(height):
         memmove(dstp8, srcp8, row_size)
