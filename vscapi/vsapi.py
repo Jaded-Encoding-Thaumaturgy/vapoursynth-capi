@@ -206,7 +206,7 @@ class VSAPI(Struct):
         ...
 
     @staticmethod
-    def getFrame(n: int, node: Pointer[VSNode], errorMsg: StrType, bugSize: int, /) -> Pointer[VSFrame]:
+    def getFrame(n: int, node: Pointer[VSNode], errorMsg: StrType, bufSize: int, /) -> Pointer[VSFrame]:
         ...
 
     @staticmethod
