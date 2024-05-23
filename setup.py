@@ -33,7 +33,7 @@ setuptools.setup(
         'Contact': 'https://discord.gg/qxTxVJGtst',
     },
     install_requires=requirements,
-    python_requires='>=3.11',
+    python_requires='>=3.12',
     packages=[
         package_name
     ],
