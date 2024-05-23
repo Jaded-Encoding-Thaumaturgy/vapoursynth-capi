@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable
 
-from ctypedffi import CythonModule, Library, Pointer, addressof, with_signature
+from ctypedffi import CythonModule, Library, Pointer, with_signature
 from ctypedffi.ctypes import c_void_p
 
 from .structs import (
@@ -79,8 +79,6 @@ class VSBridge:
     def as_node(
         node: Pointer[VSNode], vsapi: VSAPI, vscore: Pointer[VSCore], filter_mode: VSFilterMode, video: bool
     ) -> Callable[[VSFilterGetFrame], RawNode]:
-        print(addressof(vscore.contents))
-
         def _wrapper(func: Callable[..., Pointer[VSFrame]]) -> RawNode:
             # we need this so it doesn't get garbage collected
             func.__vscapigetframe = VSFilterGetFrame(func)  # type: ignore
