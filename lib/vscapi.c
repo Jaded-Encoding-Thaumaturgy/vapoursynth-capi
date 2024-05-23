@@ -16,8 +16,16 @@ static void VS_CC getNodePtr(const VSMap *in, VSMap *out, void *userData, VSCore
     returnPtr(in, out, vsapi->mapGetNode(in, "clip", 0, 0), core, vsapi);
 }
 
+static void VS_CC getNodePtr(const VSMap *in, VSMap *out, void *userData, VSCore *core, const VSAPI *vsapi) {
+    returnPtr(in, out, vsapi->mapGetFrame(in, "frame", 0, 0), core, vsapi);
+}
+
 static void VS_CC getNodeFromPtr(const VSMap *in, VSMap *out, void *userData, VSCore *core, const VSAPI *vsapi) {
     vsapi->mapConsumeNode(out, "clip", (VSNode *) vsapi->mapGetInt(in, "ptr", 0, 0), maReplace);
+}
+
+static void VS_CC getFrameFromPtr(const VSMap *in, VSMap *out, void *userData, VSCore *core, const VSAPI *vsapi) {
+    vsapi->mapConsumeFrame(out, "frame", (VSFrame *) vsapi->mapGetInt(in, "ptr", 0, 0), maReplace);
 }
 
 VS_EXTERNAL_API(void) VapourSynthPluginInit2(VSPlugin *plugin, const VSPLUGINAPI *vspapi) {
@@ -28,6 +36,8 @@ VS_EXTERNAL_API(void) VapourSynthPluginInit2(VSPlugin *plugin, const VSPLUGINAPI
 
     char *vnode = "clip:vnode;";
     char *anode = "clip:anode;";
+    char *vframe = "frame:vframe;";
+    char *aframe = "frame:aframe;";
     char *ptr = "ptr:int;";
 
     vspapi->registerFunction("getVSCApiPtr", "", ptr, returnPtr, (void *) plugin, plugin);
@@ -41,6 +51,12 @@ VS_EXTERNAL_API(void) VapourSynthPluginInit2(VSPlugin *plugin, const VSPLUGINAPI
     vspapi->registerFunction("getVNodePtr", vnode, ptr, getNodePtr, NULL, plugin);
     vspapi->registerFunction("getANodePtr", anode, ptr, getNodePtr, NULL, plugin);
 
+    vspapi->registerFunction("getVFramePtr", vframe, ptr, getFramePtr, NULL, plugin);
+    vspapi->registerFunction("getAFramePtr", aframe, ptr, getFramePtr, NULL, plugin);
+
     vspapi->registerFunction("getVNodeFromPtr", ptr, vnode, getNodeFromPtr, NULL, plugin);
     vspapi->registerFunction("getANodeFromPtr", ptr, anode, getNodeFromPtr, NULL, plugin);
+
+    vspapi->registerFunction("getVFrameFromPtr", ptr, vframe, getFrameFromPtr, NULL, plugin);
+    vspapi->registerFunction("getAFrameFromPtr", ptr, aframe, getFrameFromPtr, NULL, plugin);
 }
